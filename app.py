@@ -44,8 +44,7 @@ def answer_question(model, prompt):
 
 
 def answer():
-    st.title("Dear CALC users, \n"
-             "I am ChatGPT. Please ask your questions, and I will do my best to provide you with a satisfactory answer.")
+    st.title("Hi,I am ChatGPT. Please ask your questions, and I will do my best to provide you with a satisfactory answer.")
 
     model = "text-davinci-003"
 
@@ -64,9 +63,9 @@ def answer():
         else:
             st.write("Error occurred while getting the answer from OpenAI API.")
         
-        with open('questions_answers.csv', mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([question, ChatGPT_Answer])
+        # with open('questions_answers.csv', mode='a', newline='', encoding='utf-8') as file:
+        #    writer = csv.writer(file)
+        #    writer.writerow([question, ChatGPT_Answer])
 
 if __name__ == '__main__':
 
