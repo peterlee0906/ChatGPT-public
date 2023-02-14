@@ -57,15 +57,15 @@ def answer():
         ChatGPT_Answer = answer_question(model, prompt)
         
         if ChatGPT_Answer:
-            st.write("ChatGPT Answer:")
+            # st.write("ChatGPT Answer:")
             st.write("-" * 20)
             st.write(ChatGPT_Answer)
         else:
             st.write("Error occurred while getting the answer from OpenAI API.")
         
-         with open('questions_answers.csv', mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow([question, ChatGPT_Answer])
+        # with open('questions_answers.csv', mode='a', newline='', encoding='utf-8') as file:
+        #   writer = csv.writer(file)
+        #   writer.writerow([question, ChatGPT_Answer])
 
 if __name__ == '__main__':
 
