@@ -18,7 +18,7 @@ openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 # 如果找到了 OpenAI API 密钥，则输出密钥
 if openai.api_key:
-    print("OpenAI API Key:", openai.api_key)
+    print("OpenAI API Key is OK")
 # 如果没有找到 OpenAI API 密钥，则输出错误消息
 else:
     print("OpenAI API Key not found.")
@@ -44,7 +44,8 @@ def answer_question(model, prompt):
 
 
 def answer():
-    st.title("Hi,I am ChatGPT. Please ask your questions, and I will do my best to provide you with a satisfactory answer.")
+    st.title("Hi,I am ChatGPT! \n")
+             # ||("Please ask your questions, and I will do my best to provide you with a satisfactory answer.")
 
     model = "text-davinci-003"
 
