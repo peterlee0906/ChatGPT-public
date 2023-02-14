@@ -3,6 +3,7 @@ import csv
 import streamlit as st
 import openai
 
+# 在 Streamlit 中添加自定义 CSS 样式
 st.markdown(
     """
     <head>
@@ -12,10 +13,13 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# 从环境变量中获取 OpenAI API 密钥
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
+# 如果找到了 OpenAI API 密钥，则输出密钥
 if openai.api_key:
     print("OpenAI API Key:", openai.api_key)
+# 如果没有找到 OpenAI API 密钥，则输出错误消息
 else:
     print("OpenAI API Key not found.")
 
