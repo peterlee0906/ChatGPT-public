@@ -4,6 +4,8 @@ import streamlit as st
 import openai
 
 # 在 Streamlit 中添加自定义 CSS 样式
+
+
 st.markdown(
     """
     <head>
@@ -13,15 +15,19 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 从环境变量中获取 OpenAI API 密钥
-openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-# 如果找到了 OpenAI API 密钥，则输出密钥
-if openai.api_key:
-    print("OpenAI API Key is OK")
-# 如果没有找到 OpenAI API 密钥，则输出错误消息
-else:
-    print("OpenAI API Key not found.")
+
+    # 从环境变量中获取 OpenAI API 密钥
+
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+    # 如果找到了 OpenAI API 密钥，则输出密钥
+    if openai.api_key:
+        print("OpenAI API Key is OK")
+    # 如果没有找到 OpenAI API 密钥，则输出错误消息
+    else:
+        print("OpenAI API Key not found.")
+    
 
 
 def answer_question(model, prompt):
@@ -29,7 +35,7 @@ def answer_question(model, prompt):
         completions = openai.Completion.create(
             engine=model,
             prompt=prompt,
-            max_tokens=3072,
+            max_tokens=1024,
             n=1,
             stop=None,
             temperature=0.5,
@@ -49,24 +55,39 @@ def answer():
 
     model = "text-davinci-003"
 
-    question = st.text_area("Your question:")
+    # 创建文本输入组件以获取用户的问题
+    input_text = st.text_input("您有什么问题？")
 
-    if st.button("Submit"):
-        print("Your question is:", question)
-        prompt = (f"{question}")
 
-        ChatGPT_Answer = answer_question(model, prompt)
-        
-        if ChatGPT_Answer:
-            # st.write("ChatGPT Answer:")
-            st.write("-" * 20)
-            st.write(ChatGPT_Answer)
-        else:
-            st.write("Error occurred while getting the answer from OpenAI API.")
-        
-        # with open('questions_answers.csv', mode='a', newline='', encoding='utf-8') as file:
-        #   writer = csv.writer(file)
-        #   writer.writerow([question, ChatGPT_Answer])
+    submit_button=st.button("Submit")
+
+    # 创建文本区域组件以显示聊天历史记录
+    history_text = st.text_area("Chat History:", "")
+
+    
+
+    if submit_button:
+        if input_text :
+            print("Your question is:", input_text)
+            prompt = (f"{input_text}")
+
+            ChatGPT_Answer  = answer_question(model, prompt)
+            
+            if ChatGPT_Answer:
+                
+                # 在 Streamlit 应用程序中显示生成的响应
+                # st.text_output("AI: " + ChatGPT_Answer)
+                # 将用户输入和 AI 响应追加到聊天历史记录中
+                st.write("AI: " + ChatGPT_Answer)
+                history_text += "User: " + input_text + "\n"
+                history_text += "AI: " + ChatGPT_Answer + "\n"
+            
+            else:
+                st.write("Error occurred while getting the answer from OpenAI API.")
+            
+            # with open('questions_answers.csv', mode='a', newline='', encoding='utf-8') as file:
+            #   writer = csv.writer(file)
+            #   writer.writerow([question, ChatGPT_Answer])
 
 if __name__ == '__main__':
 
