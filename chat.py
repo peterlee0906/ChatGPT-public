@@ -3,9 +3,7 @@ import streamlit as st
 import openai
 
 # 从环境变量中获取 OpenAI API 密钥
-
 openai.api_key = os.environ.get("OPENAI_API_KEY")
-
 
 def get_response(prompt, model_engine, max_tokens=512):
     completions = openai.Completion.create(
@@ -18,7 +16,6 @@ def get_response(prompt, model_engine, max_tokens=512):
     )
     message = completions.choices[0].text.strip()
     return message
-
 
 # initialize chat history
 session_state = st.session_state
@@ -36,7 +33,6 @@ def main():
         st.write("No chat history yet.")
     else:
         for message in session_state['chat_history']:
-            #st.text_area("Chat history", value=f"{message[0]}: {message[1]}", height=200, max_chars=None, key=None)
             st.write(f"{message[0]}: {message[1]}")
 
     # get user input
@@ -46,16 +42,27 @@ def main():
         return
 
     # generate response
+    prompt = ""
+    for message in session_state['chat_history']:
+        if message[0] == "AI":
+            prompt += message[1] + "\n"
+            # prompt += "AI: " + message[1] + "\n"
+        else:
+            prompt += message[1] + "\n"
+            # prompt += "User: " + message[1] + "\n"
+
+    # prompt += "User: " + user_input
+
+    prompt += user_input
+    
+    print(f"prompt:" + prompt)
     with st.spinner(text="Generating response..."):
-        response = get_response(user_input, model_engine)
+        response = get_response(prompt, model_engine)
     st.success("Response generated.")
 
     # add user input and response to chat history
     session_state['chat_history'].append(("User", user_input))
     session_state['chat_history'].append(("AI", response))
-
-    print(f"User", user_input)
-    print(f"AI", response)
 
     # display response
     st.subheader("AI response")
@@ -66,7 +73,3 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         st.error("Error: %s" % e)
-
-
-
-
